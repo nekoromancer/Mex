@@ -9,7 +9,7 @@
  *
  * Released under the MIT license
  *
- * Date: 2014-04-17
+ * Date: 2014-06-01
  */
 
 class Mex {
@@ -79,6 +79,46 @@ class Mex {
     {
       $this->delete = $result;
     }
+  }
+
+  public function request( $method, $callback )
+  {
+    switch( $method )
+    {
+      default:
+        $data = false;
+      break;
+
+      case 'get':
+        $data = $this->get();
+      break;
+
+      case 'post':
+        $data = $this->post();
+      break;
+
+      case 'put':
+        $data = $this->put();
+      break;
+
+      case 'delete':
+        $data = $this->delete();
+      break;
+    }
+
+    if( !$data ) return;
+
+    call_user_func( $callback, $data );
+  }
+
+  public function get( $index = null, $xss_clean = false )
+  {
+    return $this->CI->input->get( $index, $xss_clean );
+  }
+
+  public function post( $index = null, $xss_clean = false )
+  {
+    return $this->CI->input->post( $index, $xss_clean );
   }
 
   public function put( $index = null, $xss_clean = false )
