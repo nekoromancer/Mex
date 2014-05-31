@@ -83,6 +83,7 @@ class Mex {
 
   public function request( $method, $callback )
   {
+    $method = strtolower($method);
     switch( $method )
     {
       default:
