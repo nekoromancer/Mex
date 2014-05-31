@@ -19,7 +19,7 @@ $this->load->library('mex');
 
 Mex의 메서드는 put()과 delete()가 존재합니다.  사용법은 CI 내장 라이브러리 Input의 메서드인 get()과 post()와 동일합니다.
 
-### a. put()
+### a. put( $index, $xss_clean )
 PUT 메서드로 전송된 데이터를 호출합니다.  아무런 매개변수 없이 사용하면 PUT으로 전송된 모든 데이터를 Array로 반환할 것입니다.  PUT으로 전송된 데이터가 없다면 false 를 반환합니다.
 
 ```php
@@ -38,5 +38,19 @@ $name = $this->mex->put('name');
 $name = $this->mex->put('name', true);
 ```
 
-### b. delete()
+### b. delete( $index, $xss_clean )
 DELETE 메서드로 전송된 데이터를 호출합니다.  사용방법은 put()과 동일합니다.
+
+### c. get(), post()
+각각 GET 메서드와 POST 메서드로 전송된 데이터를 호출합니다.  CI 내장 Input의 get()과 post() 호출하여 그대로 사용하기 때문에 사용방법이나 기능상의 차이는 없습니다.
+
+### d. requset( $method, $callback_function )
+$method에 대한 호출이 있을 때 사용자가 정의한 Callback 함수를 호출합니다.  Callback 함수에는 첫번째 매개변수로 전송된 데이터가 배열 형태로 전달됩니다.
+
+```php
+$this->mex->request('get', function( $req ) {
+  echo json_encode( $req );
+});
+```
+
+위의 코드는 GET으로 데이터가 전송되었을 때 전송된 데이터를 json 형식으로 인코딩하여 보여줄 것입니다. POST, PUT, DELETE로 같은 형태로 사용하실 수 있습니다.
