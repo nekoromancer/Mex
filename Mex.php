@@ -16,6 +16,7 @@ class Mex {
   private $CI;
   private $request;
   private $put = array();
+  private $delete = array();
 
   public function __construct() 
   {
@@ -81,7 +82,24 @@ class Mex {
     }
   }
 
-  public function request( $method, $callback )
+  private function xss_filtering( $data )
+  {
+    if( !is_array( $data ) )
+    {
+      $data = $this->security->xss_clean( $data );
+    }
+    else if( $data )
+    {
+      foreach( $this->delete as $key => $value )
+      {
+        $data[$key] = $this->security->xss_clean( $value );
+      }
+    }
+
+    return $data;
+  }
+
+  public function request( $method, $callback, $xss_clean = false )
   {
     $method = strtolower($method);
     switch( $method )
@@ -91,19 +109,19 @@ class Mex {
       break;
 
       case 'get':
-        $data = $this->get();
+        $data = & $this->get(null, $xss_clean);
       break;
 
       case 'post':
-        $data = $this->post();
+        $data = & $this->post(null, $xss_clean);
       break;
 
       case 'put':
-        $data = $this->put();
+        $data = & $this->put(null, $xss_clean);
       break;
 
       case 'delete':
-        $data = $this->delete();
+        $data = & $this->delete(null, $xss_clean);
       break;
     }
 
@@ -124,69 +142,55 @@ class Mex {
 
   public function put( $index = null, $xss_clean = false )
   {
-    if( $index === null && !empty( $this->put )  ) 
-    {
-      if( $xss_clean )
-      {
-        foreach( $this->put as $key => $value )
-        {
-          $this->put[$key] = $this->security->xss_clean( $value );
-        }
-      }
-      return $this->put;
-    }
-    else if ( $index )
+    $data = false;
+
+    if( $index )
     {
       if( isset( $this->put[$index] ) )
       {
-        if( $xss_clean )
-        {
-          return $this->security->xss_clean( $this->put[$index] );
-        }
-        return $this->put[$index];
-      }
-      else
-      {
-        return false;
+        $data = & $this->put[$index];
       }
     }
     else
     {
-      return false;
+      if( !empty( $this->put ) )
+      {
+        $data = & $this->put;
+      }
     }
+
+    if( $xss_clean )
+    {
+      $data = $this->xss_filtering( $data );
+    }
+
+    return $data;
   }
 
   public function delete( $index = null, $xss_clean = false )
   {
-    if( $index === null && !empty( $this->delete )  ) 
-    {
-      if( $xss_clean )
-      {
-        foreach( $this->delete as $key => $value )
-        {
-          $this->delete[$key] = $this->security->xss_clean( $value );
-        }
-      }
-      return $this->delete;
-    }
-    else if ( $index )
+    $data = false;
+
+    if( $index )
     {
       if( isset( $this->delete[$index] ) )
       {
-        if( $xss_clean )
-        {
-          return $this->security->xss_clean( $this->delete[$index] );
-        }
-        return $this->delete[$index];
-      }
-      else
-      {
-        return false;
+        $data = & $this->delete[$index];
       }
     }
     else
     {
-      return false;
+      if( !empty( $this->delete ) )
+      {
+        $data = & $this->delete;
+      }
     }
+
+    if( $xss_clean )
+    {
+      $data = $this->xss_filtering( $data );
+    }
+
+    return $data;
   }
 }
