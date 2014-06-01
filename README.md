@@ -44,13 +44,15 @@ DELETE 메서드로 전송된 데이터를 호출합니다.  사용방법은 put
 ### c. get(), post()
 각각 GET 메서드와 POST 메서드로 전송된 데이터를 호출합니다.  CI 내장 Input의 get()과 post() 호출하여 그대로 사용하기 때문에 사용방법이나 기능상의 차이는 없습니다.
 
-### d. requset( $method, $callback_function )
+### d. requset( $method, $callback_function, $xss_clean )
 $method에 대한 호출이 있을 때 사용자가 정의한 Callback 함수를 호출합니다.  Callback 함수에는 첫번째 매개변수로 전송된 데이터가 배열 형태로 전달됩니다.
+
+세번째 매개변수인 $xss_clean의 기본값은 false 입니다. true로 지정하면 반환되는 값을 xss 필터링하여 반환합니다.
 
 ```php
 $this->mex->request('get', function( $req ) {
   echo json_encode( $req );
-});
+}, true );
 ```
 
-위의 코드는 GET으로 데이터가 전송되었을 때 전송된 데이터를 json 형식으로 인코딩하여 보여줄 것입니다. POST, PUT, DELETE로 같은 형태로 사용하실 수 있습니다.
+위의 코드는 GET으로 데이터가 전송되었을 때 전송된 데이터를 xss 필터링 후 json 형식으로 인코딩하여 보여줄 것입니다. POST, PUT, DELETE로 같은 형태로 사용하실 수 있습니다.
