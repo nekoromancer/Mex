@@ -15,6 +15,7 @@
 class Mex {
   private $CI;
   private $request;
+  private $security;
   private $put = array();
   private $delete = array();
 
