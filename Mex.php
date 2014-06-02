@@ -83,7 +83,7 @@ class Mex {
     }
   }
 
-  private function xss_filtering( $data )
+  private function xssFiltering( $data )
   {
     if( !is_array( $data ) )
     {
@@ -162,7 +162,7 @@ class Mex {
 
     if( $xss_clean )
     {
-      $data = $this->xss_filtering( $data );
+      $data = $this->xssFiltering( $data );
     }
 
     return $data;
@@ -189,7 +189,7 @@ class Mex {
 
     if( $xss_clean )
     {
-      $data = $this->xss_filtering( $data );
+      $data = $this->xssFiltering( $data );
     }
 
     return $data;
