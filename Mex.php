@@ -12,6 +12,19 @@
  * Date: 2014-06-01
  */
 
+/*
+ * Helper functions
+ */
+
+function encJson( $array = array() )
+{
+  echo json_encode( $array );
+}
+
+/*
+ * Mex library class
+ */
+
 class Mex {
   private $CI;
   private $request;
@@ -145,19 +158,13 @@ class Mex {
   {
     $data = false;
 
-    if( $index )
+    if( $index && isset( $this->put[$index] ) )
     {
-      if( isset( $this->put[$index] ) )
-      {
-        $data = & $this->put[$index];
-      }
+      $data = & $this->put[$index];
     }
-    else
+    else if( !$index && !empty( $this->put ) )
     {
-      if( !empty( $this->put ) )
-      {
-        $data = & $this->put;
-      }
+      $data = & $this->put;
     }
 
     if( $xss_clean )
@@ -172,19 +179,13 @@ class Mex {
   {
     $data = false;
 
-    if( $index )
+    if( $index && isset( $this->delete[$index] ) )
     {
-      if( isset( $this->delete[$index] ) )
-      {
-        $data = & $this->delete[$index];
-      }
+      $data = & $this->delete[$index];
     }
-    else
+    else if( !$index && !empty( $this->delete ) )
     {
-      if( !empty( $this->delete ) )
-      {
-        $data = & $this->delete;
-      }
+      $data = & $this->delete;
     }
 
     if( $xss_clean )
