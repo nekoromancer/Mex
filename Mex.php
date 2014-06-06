@@ -9,7 +9,7 @@
  *
  * Released under the MIT license
  *
- * Date: 2014-06-01
+ * Date: 2014-06-07
  */
 
 /*
