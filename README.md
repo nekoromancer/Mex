@@ -56,3 +56,21 @@ $this->mex->request('get', function( $req ) {
 ```
 
 위의 코드는 GET으로 데이터가 전송되었을 때 전송된 데이터를 xss 필터링 후 json 형식으로 인코딩하여 보여줄 것입니다. POST, PUT, DELETE로 같은 형태로 사용하실 수 있습니다.
+
+$method 를 / 로 지정하면 아무런 리퀘스트가 없었을 때의 동작을 지정할 수 있습니다.
+
+```php
+$this->mex->request('/', function(){
+  $this->load->view('default');
+});
+```
+## 4. 헬퍼(Helper) 함수
+### a. encJson()
+encJson()은 echo json_encode(); 의 축약형입니다.
+
+```php
+$this->mex->request('get', function( $req ) {
+  encJson( $req );
+  // echo json_encode( $req ); 와 동일합니다.
+});
+```
