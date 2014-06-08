@@ -121,9 +121,7 @@ class Mex {
       default:
         $data = false;
       break;
-      case '/' :
-        $data = true;
-      break;
+      
       case 'get':
         $data = & $this->get(null, $xss_clean);
       break;
