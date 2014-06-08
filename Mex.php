@@ -9,7 +9,7 @@
  *
  * Released under the MIT license
  *
- * Date: 2014-06-07
+ * Date: 2014-06-08
  */
 
 /*
@@ -113,6 +113,14 @@ class Mex {
     return $data;
   }
 
+  private function noRequest()
+  {
+    if( strtolower( $this->request ) === 'get' && !$this->CI->input->get() )
+    {
+      return true;
+    }
+  }
+
   public function request( $method, $callback, $xss_clean = false )
   {
     $method = strtolower($method);
@@ -121,7 +129,11 @@ class Mex {
       default:
         $data = false;
       break;
-      
+
+      case '/':
+        $data = & $this->noRequest();
+      break;
+
       case 'get':
         $data = & $this->get(null, $xss_clean);
       break;
