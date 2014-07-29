@@ -9,7 +9,7 @@
  *
  * Released under the MIT license
  *
- * Date: 2014-06-08
+ * Date: 2014-07-29
  */
 
 /*
@@ -19,6 +19,14 @@
 function encJson( $array = array() )
 {
   echo json_encode( $array );
+}
+
+function encJsonp( $array = array() )
+{
+  $CI = get_instance();
+  $callback = $CI->input->get('callback');
+
+  echo $callback.'('.json_encode( $array ).')';
 }
 
 /*
@@ -38,7 +46,7 @@ class Mex {
     $this->security =& $SEC;
     $this->CI = get_instance();
 
-    header('Access-Control-Allow-Methods: GET, PUT, POST, DELETE');
+    header('Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS');
     header('charset=UTF-8');
 
     $this->request = $this->method();
@@ -113,14 +121,6 @@ class Mex {
     return $data;
   }
 
-  private function noRequest()
-  {
-    if( strtolower( $this->request ) === 'get' && !$this->CI->input->get() )
-    {
-      return true;
-    }
-  }
-
   public function request( $method, $callback, $xss_clean = false )
   {
     $method = strtolower($method);
@@ -128,10 +128,6 @@ class Mex {
     {
       default:
         $data = false;
-      break;
-
-      case '/':
-        $data = & $this->noRequest();
       break;
 
       case 'get':
